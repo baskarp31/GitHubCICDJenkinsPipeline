@@ -1,24 +1,24 @@
-pipeline{
+pipeline {
   agent any
-  environment{
+  environment {
     VENV = 'venv'
   }
-  stages{
-    stage('Checkout git'){
-      steps{
+  stages {
+    stage('Checkout git') {
+      steps {
         git branch: 'main', url: 'https://github.com/baskarp31/GitHubCICDJenkinsPipeline'
       }
     }
-    stage('set up the venv'){
-      steps{
-        bat 'python -m venv %VENV%'
-        bat '%VENV%\\Scripts\\python -m pip install --upgrade pip'
-        bat '%VENV%\\Scripts\\pip install -r requirements.txt'
+    stage('Set up the venv') {
+      steps {
+        sh 'python3 -m venv $VENV'
+        sh '$VENV/bin/python -m pip install --upgrade pip'
+        sh '$VENV/bin/pip install -r requirements.txt'
       }
     }
-    stage('RUN THE TESTS'){
-      steps{
-        bat '%VENV%\\Scripts\\python -m unittest discover -s tests'
+    stage('Run the tests') {
+      steps {
+        sh '$VENV/bin/python -m unittest discover -s tests'
       }
     }
   }
